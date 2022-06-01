@@ -235,6 +235,9 @@ class AnnotationVisitor(ast.NodeVisitor):
 				elif is_fixture and arg.arg in pytest_fixture_whitelist:
 					continue
 
+				elif function_name in {"__exit__"}:
+					continue
+
 				offending_arguments.append(f"argument {arg.arg!r} is missing a type annotation")
 
 		if not is_test and function.returns is None and function_name not in {"__init__"}:
