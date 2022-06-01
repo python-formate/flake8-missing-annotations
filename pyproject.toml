@@ -51,7 +51,7 @@ directives = [ "code-block",]
 allowed_unused = [ "flake8",]
 
 [tool.importcheck]
-always = [ "flake8_missing_annotation",]
+always = [ "flake8_missing_annotations",]
 
 [project.entry-points."flake8.extension"]
 MAN = "flake8_missing_annotations:Plugin"
