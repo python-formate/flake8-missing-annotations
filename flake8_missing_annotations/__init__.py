@@ -240,7 +240,10 @@ class AnnotationVisitor(ast.NodeVisitor):
 
 				offending_arguments.append(f"argument {arg.arg!r} is missing a type annotation")
 
-		if not is_test and function.returns is None and function_name not in {"__init__"}:
+		if (
+				not is_test and function.returns is None
+				and function_name not in {"__init__", "setup_module", "teardown_module"}
+				):
 			offending_arguments.append(_no_return_annotation)
 
 		if offending_arguments:
