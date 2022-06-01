@@ -1,0 +1,56 @@
+# Configuration for 'repo_helper' (https://github.com/domdfcoding/repo_helper)
+---
+modname: flake8-missing-annotations
+copyright_years: "2022"
+author: "Dominic Davis-Foster"
+email: "dominic@davis-foster.co.uk"
+version: "0.0.0"
+username: "python-formate"
+assignee: "domdfcoding"
+license: 'MIT'
+short_desc: "Experimental Flake8 plugin to identify missing or incomplete argument annotations."
+on_pypi: false
+
+min_coverage: 94
+use_whey: true
+docs_fail_on_warning: true
+enable_docs: false
+enable_conda: false
+enable_tests: false
+
+# Versions to run tests for
+python_versions:
+ - '3.6'
+ - '3.7'
+ - '3.8'
+ - '3.9'
+ - "3.10"
+ - 3.11-dev
+
+classifiers:
+ - 'Development Status :: 4 - Beta'
+ - 'Framework :: Flake8'
+ - 'Intended Audience :: Developers'
+ - "Topic :: Utilities"
+
+extra_sphinx_extensions:
+ - sphinx_toolbox.pre_commit
+ - sphinx_toolbox.flake8
+ - sphinx-favicon
+
+entry_points:
+  flake8.extension:
+   - MAN=flake8_missing_annotations:Plugin
+
+keywords:
+ - flake8
+ - annotations
+ - pep484
+
+sphinx_conf_epilogue:
+ - needspace_amount = r"5\baselineskip"
+ - 'favicons = [{"rel": "icon", "href": "https://python-formate.github.io/assets/formate.ico",  "sizes": "48x48", "type": "image/vnd.microsoft.icon"}]'
+ - nitpicky = True
+
+exclude_files:
+ - contributing
