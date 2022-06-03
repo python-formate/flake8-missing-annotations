@@ -148,6 +148,15 @@ class AnnotationVisitor(ast.NodeVisitor):
 	_state: List[str]
 	_errors: List[Error]
 
+	allowed_no_return_type = {
+			"__init__",
+			"__exit__",
+			"__init_subclass__",
+			"__new__",
+			"setup_module",
+			"teardown_module",
+			}
+
 	def __init__(self):
 		self._reinit()
 
@@ -240,10 +249,7 @@ class AnnotationVisitor(ast.NodeVisitor):
 
 				offending_arguments.append(f"argument {arg.arg!r} is missing a type annotation")
 
-		if (
-				not is_test and function.returns is None
-				and function_name not in {"__init__", "setup_module", "teardown_module"}
-				):
+		if not is_test and function.returns is None and function_name not in self.allowed_no_return_type:
 			offending_arguments.append(_no_return_annotation)
 
 		if offending_arguments:
