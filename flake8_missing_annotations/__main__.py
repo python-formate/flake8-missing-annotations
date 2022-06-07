@@ -35,7 +35,7 @@ from flake8_missing_annotations import check_file
 if __name__ == "__main__":
 	ret = 0
 
-	for filename in sys.argv[1:]:
-		ret |= check_file(filename)
+	for filename in sys.argv[1:]:  # pylint: disable=dotted-import-in-loop
+		ret |= check_file(filename)  # pylint: disable=loop-global-usage
 
 	sys.exit(ret)

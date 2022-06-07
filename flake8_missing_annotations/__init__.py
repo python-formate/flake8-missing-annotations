@@ -35,7 +35,7 @@ from typing import Any, Generator, Iterable, List, NamedTuple, Optional, Tuple, 
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
 
-__all__ = ["AnnotationVisitor", "Error", "Plugin", "check_file", "indent_join"]
+__all__ = ("AnnotationVisitor", "Error", "Plugin", "check_file", "indent_join")
 
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2022 Dominic Davis-Foster"
@@ -112,9 +112,11 @@ class Plugin:
 
 			offences = list(error.offences)
 
+			# pylint: disable=loop-global-usage
 			missing_return_type = _no_return_annotation in offences
 			if missing_return_type:
 				offences.remove(_no_return_annotation)
+			# pylint: enable=loop-global-usage
 
 			if offences:
 				yield (
@@ -125,15 +127,9 @@ class Plugin:
 						)
 
 			if missing_return_type:
-				yield (
-						error.lineno,
-						error.col_offset or 0,
-						f"MAN002 Function {error.function!r} {_no_return_annotation}",
-						type(self),
-						)
+				msg = f"MAN002 Function {error.function!r} {_no_return_annotation}"  # pylint: disable=loop-global-usage
+				yield error.lineno, error.col_offset or 0, msg, type(self)
 
-
-pytest_fixture_whitelist = ["monkeypatch", "capsys", "request", "pytestconfig"]
 
 _no_return_annotation = "missing return annotation"
 
@@ -147,6 +143,8 @@ class AnnotationVisitor(ast.NodeVisitor):
 
 	_state: List[str]
 	_errors: List[Error]
+
+	pytest_fixture_whitelist = ("monkeypatch", "capsys", "request", "pytestconfig")
 
 	allowed_no_return_type = {
 			"__init__",
@@ -215,37 +213,41 @@ class AnnotationVisitor(ast.NodeVisitor):
 
 		offending_arguments = []
 
+		AttributeNode, NameNode, CallNode = ast.Attribute, ast.Name, ast.Call
+
 		decorators = function.decorator_list
 		is_fixture = False
 		if decorators:
 			for deco in decorators:
-				if isinstance(deco, ast.Name):
+				if isinstance(deco, NameNode):
 					if deco.id == "fixture":
 						is_fixture = True
-				elif isinstance(deco, ast.Attribute):
-					if isinstance(deco.value, ast.Name):
+				elif isinstance(deco, AttributeNode):
+					if isinstance(deco.value, NameNode):
 						if deco.value.id == "pytest" and deco.attr == "fixture":
 							is_fixture = True
-				elif isinstance(deco, ast.Call):
-					if isinstance(deco.func, ast.Attribute):
-						if isinstance(deco.func.value, ast.Name):
+				elif isinstance(deco, CallNode):
+					if isinstance(deco.func, AttributeNode):
+						if isinstance(deco.func.value, NameNode):
 							if deco.func.value.id == "pytest" and deco.func.attr == "fixture":
 								is_fixture = True
 
 		arg: ast.arg
 		for arg in args.args:
 			if arg.annotation is None:
+				# pylint: disable=loop-invariant-statement
 				if arg.arg in {"self", "cls"}:
 					continue
 
-				if is_test and arg.arg in pytest_fixture_whitelist:
+				if is_test and arg.arg in self.pytest_fixture_whitelist:
 					continue
 
-				elif is_fixture and arg.arg in pytest_fixture_whitelist:
+				elif is_fixture and arg.arg in self.pytest_fixture_whitelist:
 					continue
 
 				elif function_name in {"__exit__"}:
 					continue
+				# pylint: enable=loop-invariant-statement
 
 				offending_arguments.append(f"argument {arg.arg!r} is missing a type annotation")
 
