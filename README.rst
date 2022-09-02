@@ -58,8 +58,8 @@ for a plugin with a broader scope than this one.
 	:target: https://github.com/python-formate/flake8-missing-annotations/actions?query=workflow%3A%22mypy%22
 	:alt: mypy status
 
-.. |requires| image:: https://dependency-dash.herokuapp.com/github/python-formate/flake8-missing-annotations/badge.svg
-	:target: https://dependency-dash.herokuapp.com/github/python-formate/flake8-missing-annotations/
+.. |requires| image:: https://dependency-dash.repo-helper.uk/github/python-formate/flake8-missing-annotations/badge.svg
+	:target: https://dependency-dash.repo-helper.uk/github/python-formate/flake8-missing-annotations/
 	:alt: Requirements Status
 
 .. |codefactor| image:: https://img.shields.io/codefactor/grade/github/python-formate/flake8-missing-annotations?logo=codefactor
