@@ -28,6 +28,7 @@ A Flake8 plugin to identify missing or incomplete argument annotations.
 
 # stdlib
 import ast
+import sys
 import textwrap
 from typing import Any, Generator, Iterable, List, NamedTuple, Optional, Tuple, Type
 
@@ -260,10 +261,16 @@ class AnnotationVisitor(ast.NodeVisitor):
 			if self._state:
 				function_name = '.'.join((*self._state, function_name))
 
+			function_lineno = function.lineno
+
+			if sys.version_info < (3, 8):
+				# TODO: account for multiline decorators
+				function_lineno += len(decorators)
+
 			error = Error(
 					function_name,
 					offending_arguments,
-					function.lineno + len(decorators),
+					function_lineno,
 					function.col_offset,
 					)
 			self._errors.append(error)
