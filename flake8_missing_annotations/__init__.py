@@ -237,7 +237,7 @@ class AnnotationVisitor(ast.NodeVisitor):
 		for arg in args.args:
 			if arg.annotation is None:
 				# pylint: disable=loop-invariant-statement
-				if arg.arg in {"self", "cls"}:
+				if arg.arg in {"self", "cls", '_'}:
 					continue
 
 				if is_test and arg.arg in self.pytest_fixture_whitelist:
