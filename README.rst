@@ -81,7 +81,7 @@ for a plugin with a broader scope than this one.
 	:target: https://github.com/python-formate/flake8-missing-annotations/commit/master
 	:alt: GitHub last commit
 
-.. |maintained| image:: https://img.shields.io/maintenance/yes/2023
+.. |maintained| image:: https://img.shields.io/maintenance/yes/2024
 	:alt: Maintenance
 
 .. end shields
