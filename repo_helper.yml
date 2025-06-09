@@ -17,6 +17,8 @@ docs_fail_on_warning: true
 enable_docs: false
 enable_conda: false
 enable_tests: false
+mypy_version: 1.16
+python_deploy_version: 3.9
 
 # Versions to run tests for
 python_versions:
