@@ -204,7 +204,7 @@ class AnnotationVisitor(ast.NodeVisitor):
 		"""
 		Visit ``def foo(): ...``.
 
-		:param node: The node being visited.
+		:param function: The node being visited.
 		"""
 
 		args: ast.arguments = function.args
